@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: #333333;
+  background-color: #fafafa;
+  min-height: 100vh;
+}
+
+@layer base {
+  :root {
+    --shiki-color-text: theme('colors.white');
+    --shiki-token-constant: theme('colors.emerald.300');
+    --shiki-token-string: theme('colors.emerald.300');
+    --shiki-token-comment: theme('colors.zinc.500');
+    --shiki-token-keyword: theme('colors.sky.300');
+    --shiki-token-parameter: theme('colors.pink.300');
+    --shiki-token-function: theme('colors.violet.300');
+    --shiki-token-string-expression: theme('colors.emerald.300');
+    --shiki-token-punctuation: theme('colors.zinc.200');
+  }
+
+  [inert] ::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    background-color: white !important;
+    color: inherit !important;
+  }
+
+  input[type='radio'] {
+    accent-color: #2b75ff !important;
+    color: white;
+    background-color: white;
+    appearance: none;
+    border: 1px solid white;
+    border-radius: 50%;
+    border: 1px solid #828282;
+    width: 13px;
+    height: 13px;
+  }
+  input[type='radio']:checked {
+    background-color: white !important;
+    appearance: auto !important;
+  }
+
+  input[type='checkbox']:checked {
+    accent-color: #2b75ff !important;
+  }
+
+  input[type='text'] {
+    background-color: white !important;
+  }
+}
+
+@media screen and (min-width: 1921px) {
+  video {
+    width: 100% !important;
+    height: auto;
+    max-width: none;
+  }
+}
