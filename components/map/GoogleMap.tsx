@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
 
 import {
   Map,
@@ -8,66 +8,66 @@ import {
   Marker,
   useMap,
   AdvancedMarker,
-} from '@vis.gl/react-google-maps'
+} from "@vis.gl/react-google-maps";
 
-import { data } from '@/data/dummyData'
+import { data } from "@/data/dummyData";
 
 function GoogleMap({
   setSelectedItem,
 }: {
-  setSelectedItem: (item: any) => void
+  setSelectedItem: (item: any) => void;
 }) {
-  const [localData, setLocalData] = useState(data)
-  const [id, setId] = useState<string | number | null>(null)
-  const [center, setCenter] = useState({ lat: 0, lng: 0 })
-  const [zoom, setZoom] = useState(3)
-  const map = useMap()
+  const [localData, setLocalData] = useState(data);
+  const [id, setId] = useState<string | number | null>(null);
+  const [center, setCenter] = useState({ lat: 0, lng: 0 });
+  const [zoom, setZoom] = useState(3);
+  const map = useMap();
 
   // Zoom Map To Fit All Markers Locations
   useEffect(() => {
     let minLat = Infinity,
-      maxLat = -Infinity
+      maxLat = -Infinity;
     let minLng = Infinity,
-      maxLng = -Infinity
+      maxLng = -Infinity;
 
     localData.forEach((item) => {
-      minLat = Math.min(minLat, item.location.lat)
-      maxLat = Math.max(maxLat, item.location.lat)
-      minLng = Math.min(minLng, item.location.lng)
-      maxLng = Math.max(maxLng, item.location.lng)
-    })
+      minLat = Math.min(minLat, item.location.lat);
+      maxLat = Math.max(maxLat, item.location.lat);
+      minLng = Math.min(minLng, item.location.lng);
+      maxLng = Math.max(maxLng, item.location.lng);
+    });
 
-    const centerLat = (minLat + maxLat) / 2
-    const centerLng = (minLng + maxLng) / 2
-    setCenter({ lat: centerLat, lng: centerLng })
-    setZoom(6)
-  }, [])
+    const centerLat = (minLat + maxLat) / 2;
+    const centerLng = (minLng + maxLng) / 2;
+    setCenter({ lat: centerLat, lng: centerLng });
+    setZoom(6);
+  }, [localData]);
 
   const onMarkerClick = (itemId: number | string) => {
     if (id === itemId) {
-      setSelectedItem(null)
-      setId(null)
-      map?.setZoom(6)
+      setSelectedItem(null);
+      setId(null);
+      map?.setZoom(6);
     } else {
-      const foundItem = localData.find((item) => item.id === itemId)
+      const foundItem = localData.find((item) => item.id === itemId);
       if (foundItem) {
-        setSelectedItem(foundItem)
-        setId(itemId)
+        setSelectedItem(foundItem);
+        setId(itemId);
         // Zoom to coordinate
-        const zoomLevel = 10
+        const zoomLevel = 10;
         if (map) {
           map.panTo({
             lat: foundItem.location.lat,
             lng: foundItem.location.lng,
-          })
-          map.setZoom(zoomLevel)
+          });
+          map.setZoom(zoomLevel);
         }
       }
     }
-  }
+  };
 
   return (
-    <div style={{ height: '85vh', width: '100%' }}>
+    <div style={{ height: "85vh", width: "100%" }}>
       {/* IMPORTANT: The map ID used in the Map component is for testing purposed ONLY. Do not use in production environment. You should generate your own map ID from Google console and replace mapId prop here. */}
       <Map
         defaultZoom={zoom}
@@ -77,7 +77,7 @@ function GoogleMap({
         fullscreenControl={false}
         mapTypeControl={false}
         mapId="DEMO_MAP_ID"
-        style={{ borderRadius: '6px' }}
+        style={{ borderRadius: "6px" }}
       >
         {localData.map((item) => {
           return (
@@ -88,14 +88,16 @@ function GoogleMap({
               onClick={() => onMarkerClick(item.id)}
             >
               <span
-                className={`inline-block h-[20px] w-[20px] rounded-full border-2 border-white ${item.isCustomerBrand ? 'bg-[#d02626]' : 'bg-[#8d83d8]'} `}
+                className={`inline-block h-[20px] w-[20px] rounded-full border-2 border-white ${
+                  item.isCustomerBrand ? "bg-[#d02626]" : "bg-[#8d83d8]"
+                } `}
               ></span>
             </AdvancedMarker>
-          )
+          );
         })}
       </Map>
     </div>
-  )
+  );
 }
 
-export default GoogleMap
+export default GoogleMap;

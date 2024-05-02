@@ -1,15 +1,15 @@
-'use client'
-import { useEffect, useState } from 'react'
+"use client";
+import { useEffect, useState } from "react";
 import {
   filterQuestionOptions,
   demographics,
   demographicsData,
-} from '@/data/dummyData'
+} from "@/data/dummyData";
 
 type FilterDataType = {
-  question: { text: string; id: string | number }
-  consumerDemographics: { [key: string]: string[] }
-}
+  question: { text: string; id: string | number };
+  consumerDemographics: { [key: string]: string[] };
+};
 
 function Filter() {
   // COMPUTED FUNCTIONS
@@ -17,31 +17,32 @@ function Filter() {
   /*Compute Default Consumer Demographics. IMPORTANT: note that this is done so that the consumer demographics options are all checked by default.
   You might have to set all demographics back to an empty data structure of your choice */
   const consumerDemographics = () => {
-    const obj: { [key: string]: string[] } = {}
+    const obj: { [key: string]: string[] } = {};
     demographicsData.map((demographics) => {
-      let key = Object.keys(demographics)[0]
-      let value = Object.values(demographics)[0]
-      obj[key] = value
-    })
-    return obj
-  }
+      let key = Object.keys(demographics)[0];
+      let value = Object.values(demographics)[0];
+      obj[key] = value;
+    });
+    return obj;
+  };
 
-  const initialConsumerDemographics = consumerDemographics()
+  const initialConsumerDemographics = consumerDemographics();
 
   // STATES
   const [filterData, setFilterData] = useState<FilterDataType>({
     question: {
-      text: '',
-      id: '',
+      text: "",
+      id: "",
     },
     consumerDemographics: initialConsumerDemographics,
-  })
+  });
 
   const [selectedQuestion, setSelectedQuestion] = useState(
-    'What is the name of your favorite soft drink brand and why?',
-  )
-  const [openQuestion, setOpenQuestion] = useState(true)
-  const [openConsumerDemographics, setOpenConsumerDemographics] = useState(true)
+    "What is the name of your favorite soft drink brand and why?"
+  );
+  const [openQuestion, setOpenQuestion] = useState(true);
+  const [openConsumerDemographics, setOpenConsumerDemographics] =
+    useState(true);
 
   const [openDemographic, setOpenDemographic] = useState({
     age: { isOpen: false },
@@ -52,17 +53,17 @@ function Filter() {
     relationshipStatus: { isOpen: false },
     parentalStatus: { isOpen: false },
     mobileDevice: { isOpen: false },
-  })
+  });
 
   // FUNCTIONS
   const selectAllDemographicOptions = (demographic: string) => {
     const updatedDemographicsOptions = demographicsData
       .map(
         (demographicsItem) =>
-          demographicsItem[demographic as keyof typeof demographicsItem],
+          demographicsItem[demographic as keyof typeof demographicsItem]
       )
       .flat()
-      .filter((option): option is string => option !== undefined)
+      .filter((option): option is string => option !== undefined);
 
     setFilterData((prevFilterData) => ({
       ...prevFilterData,
@@ -70,8 +71,8 @@ function Filter() {
         ...prevFilterData.consumerDemographics,
         [demographic]: updatedDemographicsOptions,
       },
-    }))
-  }
+    }));
+  };
 
   const clearAllDemographicOptions = (demographic: string) => {
     setFilterData((prevFilterData) => ({
@@ -80,65 +81,65 @@ function Filter() {
         ...prevFilterData.consumerDemographics,
         [demographic]: [],
       },
-    }))
-  }
+    }));
+  };
 
   const toggleOpenQuestion = () => {
-    setOpenQuestion(!openQuestion)
-  }
+    setOpenQuestion(!openQuestion);
+  };
 
   const toggleOpenDemographics = () => {
-    setOpenConsumerDemographics(!openConsumerDemographics)
-  }
+    setOpenConsumerDemographics(!openConsumerDemographics);
+  };
 
   const handleOpenIndividualDemographic = (demographic: string) => {
     setOpenDemographic((prevState) => {
-      return { ...prevState, [demographic]: { isOpen: true } }
-    })
-  }
+      return { ...prevState, [demographic]: { isOpen: true } };
+    });
+  };
 
   const handleCloseIndividualDemographic = (demographic: string) => {
     setOpenDemographic((prevState) => {
-      return { ...prevState, [demographic]: { isOpen: false } }
-    })
-  }
+      return { ...prevState, [demographic]: { isOpen: false } };
+    });
+  };
 
   const handleSelectedQuestionChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setSelectedQuestion(e.target.value)
+    setSelectedQuestion(e.target.value);
     setFilterData((prevFilterData) => ({
       ...prevFilterData,
       question: { text: e.target.value, id: prevFilterData.question.id },
-    }))
-  }
+    }));
+  };
 
   const handleDemographicsCheckboxChange = (
     demographicName: string,
-    option: string,
+    option: string
   ) => {
     setFilterData((prevFilterData) => {
       const updatedConsumerDemographics = {
         ...prevFilterData.consumerDemographics,
-      }
+      };
 
       if (!updatedConsumerDemographics[demographicName].includes(option)) {
         updatedConsumerDemographics[demographicName] = [
           ...updatedConsumerDemographics[demographicName],
           option,
-        ]
+        ];
       } else {
         updatedConsumerDemographics[demographicName] =
           updatedConsumerDemographics[demographicName].filter(
-            (opt) => opt !== option,
-          )
+            (opt) => opt !== option
+          );
       }
       return {
         ...prevFilterData,
         consumerDemographics: updatedConsumerDemographics,
-      }
-    })
-  }
+      };
+    });
+  };
 
   const handleClearAll = () => {
     setFilterData((prevFilterData) => {
@@ -152,23 +153,23 @@ function Filter() {
           Age: [],
           Gender: [],
           Employment: [],
-          'Monthly Household Income': [],
+          "Monthly Household Income": [],
           Education: [],
-          'Relationship Status': [],
-          'Parental Status': [],
-          'Mobile Device': [],
+          "Relationship Status": [],
+          "Parental Status": [],
+          "Mobile Device": [],
         },
-      }
-    })
-  }
+      };
+    });
+  };
 
   // USE EFFECTS
   useEffect(() => {
     setFilterData((prevFilterData) => ({
       ...prevFilterData,
       question: { text: selectedQuestion, id: prevFilterData.question.id },
-    }))
-  }, [])
+    }));
+  }, [selectedQuestion]);
 
   return (
     <>
@@ -275,7 +276,7 @@ function Filter() {
                     </label>
                   </div>
                 </div>
-              )
+              );
             })}
           </>
         )}
@@ -448,11 +449,11 @@ function Filter() {
                     ?.isOpen && (
                     <>
                       {demographicsData.map((filterParam, index) => {
-                        const demographicName = Object.keys(filterParam)[0]
+                        const demographicName = Object.keys(filterParam)[0];
                         const optionsArray =
                           filterParam[
                             demographicName as keyof typeof filterParam
-                          ]
+                          ];
                         return demographicName === demographic ? (
                           <div key={index} className="form-controls">
                             {optionsArray!.map((option, optionIndex) => (
@@ -472,7 +473,7 @@ function Filter() {
                                   onChange={() =>
                                     handleDemographicsCheckboxChange(
                                       demographicName,
-                                      option,
+                                      option
                                     )
                                   }
                                 />
@@ -485,19 +486,19 @@ function Filter() {
                               </div>
                             ))}
                           </div>
-                        ) : null
+                        ) : null;
                       })}
                     </>
                   )}
                   <div className="h-[1.33px] w-full bg-[#D9D9D9]"></div>
                 </div>
-              )
+              );
             })}
           </>
         )}
       </div>
     </>
-  )
+  );
 }
 
-export default Filter
+export default Filter;
