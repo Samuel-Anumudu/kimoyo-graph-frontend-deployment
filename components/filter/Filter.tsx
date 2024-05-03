@@ -423,26 +423,6 @@ function Filter() {
                           {demographic}
                         </p>
                       </div>
-                      {filterData.consumerDemographics[demographic].length ===
-                      0 ? (
-                        <button
-                          onClick={() =>
-                            selectAllDemographicOptions(demographic)
-                          }
-                          className="text-[13.33px] font-medium uppercase text-[#0075F2]"
-                        >
-                          Select all
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() =>
-                            clearAllDemographicOptions(demographic)
-                          }
-                          className="text-[13.33px] font-medium uppercase text-[#0075F2]"
-                        >
-                          Clear all
-                        </button>
-                      )}
                     </div>
                   )}
                   {openDemographic[demographic as keyof typeof openDemographic]

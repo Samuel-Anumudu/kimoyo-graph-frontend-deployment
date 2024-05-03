@@ -14,16 +14,20 @@ import { data } from "@/data/dummyData";
 
 function GoogleMap({
   setSelectedItem,
+  setPlay,
 }: {
   setSelectedItem: (item: any) => void;
+  setPlay: (value: boolean) => void;
 }) {
   const [localData, setLocalData] = useState(data);
   const [id, setId] = useState<string | number | null>(null);
+
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [zoom, setZoom] = useState(3);
-  const map = useMap();
 
+  const map = useMap();
   // Zoom Map To Fit All Markers Locations
+
   useEffect(() => {
     let minLat = Infinity,
       maxLat = -Infinity;
@@ -37,24 +41,24 @@ function GoogleMap({
       maxLng = Math.max(maxLng, item.location.lng);
     });
 
-    const centerLat = (minLat + maxLat) / 2;
-    const centerLng = (minLng + maxLng) / 2;
+    const centerLat = (minLat + maxLat) / 3.2;
+    const centerLng = (minLng + maxLng) / 2.3;
     setCenter({ lat: centerLat, lng: centerLng });
-    setZoom(6);
+    setZoom(15);
   }, [localData]);
 
   const onMarkerClick = (itemId: number | string) => {
     if (id === itemId) {
       setSelectedItem(null);
       setId(null);
-      map?.setZoom(6);
+      map?.setZoom(15);
     } else {
       const foundItem = localData.find((item) => item.id === itemId);
       if (foundItem) {
         setSelectedItem(foundItem);
         setId(itemId);
         // Zoom to coordinate
-        const zoomLevel = 10;
+        const zoomLevel = 15;
         if (map) {
           map.panTo({
             lat: foundItem.location.lat,
@@ -64,10 +68,12 @@ function GoogleMap({
         }
       }
     }
+
+    setPlay(true);
   };
 
   return (
-    <div style={{ height: "85vh", width: "100%" }}>
+    <div className="h-[85vh] w-full rounded-[6px] pr-8">
       {/* IMPORTANT: The map ID used in the Map component is for testing purposed ONLY. Do not use in production environment. You should generate your own map ID from Google console and replace mapId prop here. */}
       <Map
         defaultZoom={zoom}
@@ -77,7 +83,10 @@ function GoogleMap({
         fullscreenControl={false}
         mapTypeControl={false}
         mapId="DEMO_MAP_ID"
-        style={{ borderRadius: "6px" }}
+        style={{
+          borderRadius: "6px",
+          border: "1.33px solid #E0E0E0",
+        }}
       >
         {localData.map((item) => {
           return (
