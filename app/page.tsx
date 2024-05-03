@@ -68,14 +68,14 @@ function RootPage() {
 
                   <div>
                     {/* TODO: Map through this in the future */}
-                    <div className="flex justify-between border-b px-4 py-[10px] text-[12px]">
+                    <div className="flex justify-between border-b px-4 py-[10px] profile-padding text-[12px]">
                       <p className="uppercase text-[#828282]">Date submitted</p>
                       <p className="text-[#333333]">
                         {selectedItem["insights"].dateSubmitted}
                       </p>
                     </div>
 
-                    <div className="flex justify-between border-b px-4 py-[10px] text-[12px]">
+                    <div className="flex justify-between border-b px-4 py-[10px] profile-padding text-[12px]">
                       <p className="uppercase text-[#828282]">
                         Relationship Status
                       </p>
@@ -84,37 +84,37 @@ function RootPage() {
                       </p>
                     </div>
 
-                    <div className="flex justify-between border-b px-4 py-[10px] text-[12px]">
+                    <div className="flex justify-between border-b px-4 py-[10px] profile-padding text-[12px]">
                       <p className="uppercase text-[#828282]">Age</p>
                       <p className="text-[#333333]">
                         {selectedItem["demographics"].age}
                       </p>
                     </div>
-                    <div className="flex justify-between border-b px-4 py-[10px] text-[12px]">
+                    <div className="flex justify-between border-b px-4 py-[10px] profile-padding text-[12px]">
                       <p className="uppercase text-[#828282]">Gender</p>
                       <p className="text-[#333333]">
                         {selectedItem["demographics"].gender}
                       </p>
                     </div>
-                    <div className="flex justify-between border-b px-4 py-[10px] text-[12px]">
+                    <div className="flex justify-between border-b px-4 py-[10px] profile-padding text-[12px]">
                       <p className="uppercase text-[#828282]">Employment</p>
                       <p className="text-[#333333]">
                         {selectedItem["demographics"].employment}
                       </p>
                     </div>
-                    <div className="flex justify-between border-b px-4 py-[10px] text-[12px]">
+                    <div className="flex justify-between border-b px-4 py-[10px] profile-padding text-[12px]">
                       <p className="uppercase text-[#828282]">Monthly Income</p>
                       <p className="text-[#333333]">
                         {selectedItem["demographics"].income}
                       </p>
                     </div>
-                    <div className="flex justify-between border-b px-4 py-[10px] text-[12px]">
+                    <div className="flex justify-between border-b px-4 py-[10px] profile-padding text-[12px]">
                       <p className="uppercase text-[#828282]">Education</p>
                       <p className="text-[#333333]">
                         {selectedItem["demographics"].education}
                       </p>
                     </div>
-                    <div className="flex justify-between px-4 py-[10px] text-[12px]">
+                    <div className="flex justify-between px-4 py-[10px] profile-padding text-[12px]">
                       <p className="break-all uppercase text-[#828282]">
                         Parental Status
                       </p>
