@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { UserData } from "@/data/dummyData";
 
 import {
   Map,
@@ -12,29 +13,56 @@ import {
 
 import { data } from "@/data/dummyData";
 
+type FilterDataType = {
+  question: { text: string; id: string | number };
+  consumerDemographics: { [key: string]: string[] };
+};
+
 function GoogleMap({
+  filterData,
   setSelectedItem,
   setPlay,
 }: {
+  filterData: FilterDataType;
   setSelectedItem: (item: any) => void;
   setPlay: (value: boolean) => void;
 }) {
-  const [localData, setLocalData] = useState(data);
+  const [localDataCopy, setLocalDataCopy] = useState([...data]);
   const [id, setId] = useState<string | number | null>(null);
-
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [zoom, setZoom] = useState(3);
+  const filterDataRef = useRef(filterData);
+
+  // This UseEffect Is Where the Filter Logic Lives
+  useEffect(() => {
+    for (const key of Object.keys(filterData)) {
+      if (
+        JSON.stringify(filterData[key as keyof FilterDataType]) !==
+        JSON.stringify(filterDataRef.current[key as keyof FilterDataType])
+      ) {
+        if (key === "question") {
+          const updatedLocalData = data.filter(
+            (item) => item.insights.question === filterData[key].text
+          );
+          setLocalDataCopy(updatedLocalData);
+        } else if (key === "consumerDemographics") {
+          // TODO: Please do the same for demographics filter
+          return;
+        }
+      }
+    }
+    filterDataRef.current = filterData;
+  }, [filterData, data]);
 
   const map = useMap();
   // Zoom Map To Fit All Markers Locations
-
   useEffect(() => {
     let minLat = Infinity,
       maxLat = -Infinity;
     let minLng = Infinity,
       maxLng = -Infinity;
 
-    localData.forEach((item) => {
+    data.forEach((item) => {
       minLat = Math.min(minLat, item.location.lat);
       maxLat = Math.max(maxLat, item.location.lat);
       minLng = Math.min(minLng, item.location.lng);
@@ -45,7 +73,7 @@ function GoogleMap({
     const centerLng = (minLng + maxLng) / 2.3;
     setCenter({ lat: centerLat, lng: centerLng });
     setZoom(15);
-  }, [localData]);
+  }, [data]);
 
   const onMarkerClick = (itemId: number | string) => {
     if (id === itemId) {
@@ -53,7 +81,7 @@ function GoogleMap({
       setId(null);
       map?.setZoom(15);
     } else {
-      const foundItem = localData.find((item) => item.id === itemId);
+      const foundItem = localDataCopy.find((item) => item.id === itemId);
       if (foundItem) {
         setSelectedItem(foundItem);
         setId(itemId);
@@ -88,7 +116,7 @@ function GoogleMap({
           border: "1.33px solid #E0E0E0",
         }}
       >
-        {localData.map((item) => {
+        {localDataCopy.map((item) => {
           return (
             <AdvancedMarker
               key={item.id}

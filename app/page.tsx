@@ -7,11 +7,43 @@ import GoogleMap from "@/components/map/GoogleMap";
 import Filter from "@/components/filter/Filter";
 import SearchBar from "@/components/ui/SearchBar";
 
+import { demographicsData } from "@/data/dummyData";
+
+type FilterDataType = {
+  question: { text: string; id: string | number };
+  consumerDemographics: { [key: string]: string[] };
+};
+
 function RootPage() {
+  // HELPER FUNCTIONS
+
+  /*Compute Default Consumer Demographics. IMPORTANT: note that this is done so that the consumer demographics options are all checked by default.
+  You might have to set all demographics back to an empty data structure of your choice */
+  const consumerDemographics = () => {
+    const obj: { [key: string]: string[] } = {};
+    demographicsData.map((demographics) => {
+      let key = Object.keys(demographics)[0];
+      let value = Object.values(demographics)[0];
+      obj[key] = value;
+    });
+    return obj;
+  };
+
+  // STATES
+  const initialConsumerDemographics = consumerDemographics();
+
   const [isShowProfiles, setIsShowProfiles] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [play, setPlay] = useState<boolean>(false);
+  const [filterData, setFilterData] = useState<FilterDataType>({
+    question: {
+      text: "",
+      id: "",
+    },
+    consumerDemographics: initialConsumerDemographics,
+  });
 
+  // USE EFFECT
   useEffect(() => {
     if (selectedItem) setIsShowProfiles(true);
     else setIsShowProfiles(false);
@@ -33,7 +65,7 @@ function RootPage() {
       <div className="px-8 pt-[74.67px]">
         <div className="flex">
           <aside className="basis-[309.33px]">
-            <Filter />
+            <Filter setFilterData={setFilterData} filterData={filterData} />
           </aside>
           <main className="fixed left-0 right-0 ml-[320.33px] pl-12">
             <div className="flex pt-10">
@@ -43,6 +75,7 @@ function RootPage() {
                 }`}
               >
                 <GoogleMap
+                  filterData={filterData}
                   setPlay={setPlay}
                   setSelectedItem={setSelectedItem}
                 />
@@ -71,7 +104,7 @@ function RootPage() {
                     <div className="flex justify-between border-b px-4 py-[10px] profile-padding text-[12px]">
                       <p className="uppercase text-[#828282]">Date submitted</p>
                       <p className="text-[#333333]">
-                        {selectedItem["insights"].dateSubmitted}
+                        {selectedItem["insights"]["dateSubmitted"]}
                       </p>
                     </div>
 
@@ -80,38 +113,42 @@ function RootPage() {
                         Relationship Status
                       </p>
                       <p className="text-[#333333]">
-                        {selectedItem["demographics"].relationshipStatus}
+                        {selectedItem["demographics"]["Relationship Status"]}
                       </p>
                     </div>
 
                     <div className="flex justify-between border-b px-4 py-[10px] profile-padding text-[12px]">
                       <p className="uppercase text-[#828282]">Age</p>
                       <p className="text-[#333333]">
-                        {selectedItem["demographics"].age}
+                        {selectedItem["demographics"]["Age"]}
                       </p>
                     </div>
                     <div className="flex justify-between border-b px-4 py-[10px] profile-padding text-[12px]">
                       <p className="uppercase text-[#828282]">Gender</p>
                       <p className="text-[#333333]">
-                        {selectedItem["demographics"].gender}
+                        {selectedItem["demographics"]["Gender"]}
                       </p>
                     </div>
                     <div className="flex justify-between border-b px-4 py-[10px] profile-padding text-[12px]">
                       <p className="uppercase text-[#828282]">Employment</p>
                       <p className="text-[#333333]">
-                        {selectedItem["demographics"].employment}
+                        {selectedItem["demographics"]["Employment"]}
                       </p>
                     </div>
                     <div className="flex justify-between border-b px-4 py-[10px] profile-padding text-[12px]">
                       <p className="uppercase text-[#828282]">Monthly Income</p>
                       <p className="text-[#333333]">
-                        {selectedItem["demographics"].income}
+                        {
+                          selectedItem["demographics"][
+                            "Monthly Household Income"
+                          ]
+                        }
                       </p>
                     </div>
                     <div className="flex justify-between border-b px-4 py-[10px] profile-padding text-[12px]">
                       <p className="uppercase text-[#828282]">Education</p>
                       <p className="text-[#333333]">
-                        {selectedItem["demographics"].education}
+                        {selectedItem["demographics"]["Education"]}
                       </p>
                     </div>
                     <div className="flex justify-between px-4 py-[10px] profile-padding text-[12px]">
@@ -119,7 +156,7 @@ function RootPage() {
                         Parental Status
                       </p>
                       <p className="text-[#333333]">
-                        {selectedItem["demographics"].parentalStatus}
+                        {selectedItem["demographics"]["Parental Status"]}
                       </p>
                     </div>
                   </div>

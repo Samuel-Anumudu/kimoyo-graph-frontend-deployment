@@ -11,32 +11,14 @@ type FilterDataType = {
   consumerDemographics: { [key: string]: string[] };
 };
 
-function Filter() {
-  // COMPUTED FUNCTIONS
-
-  /*Compute Default Consumer Demographics. IMPORTANT: note that this is done so that the consumer demographics options are all checked by default.
-  You might have to set all demographics back to an empty data structure of your choice */
-  const consumerDemographics = () => {
-    const obj: { [key: string]: string[] } = {};
-    demographicsData.map((demographics) => {
-      let key = Object.keys(demographics)[0];
-      let value = Object.values(demographics)[0];
-      obj[key] = value;
-    });
-    return obj;
-  };
-
-  const initialConsumerDemographics = consumerDemographics();
-
+function Filter({
+  filterData,
+  setFilterData,
+}: {
+  filterData: FilterDataType;
+  setFilterData: (value: FilterDataType | any) => void;
+}) {
   // STATES
-  const [filterData, setFilterData] = useState<FilterDataType>({
-    question: {
-      text: "",
-      id: "",
-    },
-    consumerDemographics: initialConsumerDemographics,
-  });
-
   const [selectedQuestion, setSelectedQuestion] = useState(
     "What is the name of your favorite soft drink brand and why?"
   );
@@ -65,7 +47,7 @@ function Filter() {
       .flat()
       .filter((option): option is string => option !== undefined);
 
-    setFilterData((prevFilterData) => ({
+    setFilterData((prevFilterData: FilterDataType) => ({
       ...prevFilterData,
       consumerDemographics: {
         ...prevFilterData.consumerDemographics,
@@ -75,7 +57,7 @@ function Filter() {
   };
 
   const clearAllDemographicOptions = (demographic: string) => {
-    setFilterData((prevFilterData) => ({
+    setFilterData((prevFilterData: FilterDataType) => ({
       ...prevFilterData,
       consumerDemographics: {
         ...prevFilterData.consumerDemographics,
@@ -108,7 +90,7 @@ function Filter() {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     setSelectedQuestion(e.target.value);
-    setFilterData((prevFilterData) => ({
+    setFilterData((prevFilterData: FilterDataType) => ({
       ...prevFilterData,
       question: { text: e.target.value, id: prevFilterData.question.id },
     }));
@@ -118,7 +100,7 @@ function Filter() {
     demographicName: string,
     option: string
   ) => {
-    setFilterData((prevFilterData) => {
+    setFilterData((prevFilterData: FilterDataType) => {
       const updatedConsumerDemographics = {
         ...prevFilterData.consumerDemographics,
       };
@@ -142,7 +124,7 @@ function Filter() {
   };
 
   const handleClearAll = () => {
-    setFilterData((prevFilterData) => {
+    setFilterData((prevFilterData: FilterDataType) => {
       return {
         question: {
           text: prevFilterData.question.text,
@@ -165,7 +147,7 @@ function Filter() {
 
   // USE EFFECTS
   useEffect(() => {
-    setFilterData((prevFilterData) => ({
+    setFilterData((prevFilterData: FilterDataType) => ({
       ...prevFilterData,
       question: { text: selectedQuestion, id: prevFilterData.question.id },
     }));
