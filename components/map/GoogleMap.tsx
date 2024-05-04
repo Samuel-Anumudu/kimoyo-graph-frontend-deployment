@@ -34,6 +34,7 @@ function GoogleMap({
   const filterDataRef = useRef(filterData);
 
   // This UseEffect Is Where the Filter Logic Lives
+
   useEffect(() => {
     for (const key of Object.keys(filterData)) {
       if (
@@ -42,7 +43,7 @@ function GoogleMap({
       ) {
         if (key === "question") {
           const updatedLocalData = data.filter(
-            (item) => item.insights.question === filterData[key].text
+            (item) => filterData[key].text === item.insights.question
           );
           setLocalDataCopy(updatedLocalData);
         } else if (key === "consumerDemographics") {

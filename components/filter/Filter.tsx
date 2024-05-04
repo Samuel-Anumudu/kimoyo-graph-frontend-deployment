@@ -124,24 +124,20 @@ function Filter({
   };
 
   const handleClearAll = () => {
-    setFilterData((prevFilterData: FilterDataType) => {
-      return {
-        question: {
-          text: prevFilterData.question.text,
-          id: prevFilterData.question.id,
-        },
-        consumerDemographics: {
-          ...prevFilterData.consumerDemographics,
-          Age: [],
-          Gender: [],
-          Employment: [],
-          "Monthly Household Income": [],
-          Education: [],
-          "Relationship Status": [],
-          "Parental Status": [],
-          "Mobile Device": [],
-        },
-      };
+    setFilterData({
+      question: {
+        text: selectedQuestion,
+      },
+      consumerDemographics: {
+        Age: [],
+        Gender: [],
+        Employment: [],
+        "Monthly Household Income": [],
+        Education: [],
+        "Relationship Status": [],
+        "Parental Status": [],
+        "Mobile Device": [],
+      },
     });
   };
 
